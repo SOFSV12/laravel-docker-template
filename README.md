@@ -23,7 +23,7 @@
    - **Host Name / Address:** `db`
    - **Username:** `bayana`
    - **Password:** `causes101`
-3. Save and connect
+3. Save and connect piece of cake 
 
 
 
