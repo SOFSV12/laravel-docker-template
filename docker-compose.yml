@@ -1,0 +1,80 @@
+services:
+    # Laravel Application (PHP-FPM)
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: backend-app
+        volumes:
+            - ".:/var/www/html"
+        networks:
+            - laravel
+
+
+    horizon:
+      build: .
+      container_name: horizon
+      command: php artisan horizon
+      volumes:
+        - ".:/var/www/html"
+      depends_on:
+        - app
+      networks:
+        - laravel
+
+    # Redis (optional - for cache/session)
+    redis:
+        image: redis:alpine
+        container_name: redis
+        restart: always
+        networks:
+            - laravel
+
+    # PostgreSQL Database
+    db:
+        image: postgres:15
+        container_name: bayana_database
+        restart: always
+        environment:
+            POSTGRES_USER: bayana
+            POSTGRES_PASSWORD: causes101
+            POSTGRES_DB: bayana_db
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        networks:
+            - laravel
+
+    # Optional: pgAdmin (GUI for Postgres) - remove if not needed
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: database_gui
+        restart: unless-stopped
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@bayana.com
+            PGADMIN_DEFAULT_PASSWORD: causes101
+        ports:
+            - "5050:80"
+        depends_on:
+            - db
+        networks:
+            - laravel
+
+    # Nginx Web Server
+    nginx:
+        image: nginx:alpine
+        container_name: nginx
+        ports:
+            - "8080:80"
+        volumes:
+            - .:/var/www/html
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - app
+        networks:
+            - laravel
+
+networks:
+    laravel:
+
+volumes:
+    pgdata:
