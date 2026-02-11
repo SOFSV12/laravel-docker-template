@@ -22,4 +22,13 @@ class RegisterController extends Controller
 
         return response()->json(['message' => 'NGO created successfully', 'data' => $user ], Response::HTTP_CREATED);
     }
+
+    public function createVolunteer(RegisterRequest $request)
+    {
+        Log::info("Logging from creat NGO");
+
+        $user = $this->service->createVolunteer($request->toDto());
+
+        return response()->json(['message' => 'Volunteer created successfully', 'data' => $user ], Response::HTTP_CREATED);
+    }
 }
