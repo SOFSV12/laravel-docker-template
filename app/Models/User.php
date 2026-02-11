@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Illuminate\Support\Str;
+use App\Models\Ngo;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Volunteer\Volunteer;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -53,6 +53,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function volunteer(): HasOne
     {
         return $this->hasOne(Volunteer::class, 'user_id', 'uuid');
+    }
+
+    /**
+     * Setup one to one Rrelationship between User and NGO
+     *
+     * @return HasOne
+     */
+    public function ngo(): HasOne
+    {
+        return $this->hasOne(Ngo::class, 'user_id', 'uuid');
     }
 
     /**
