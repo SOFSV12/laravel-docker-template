@@ -5,10 +5,9 @@ namespace App\Services\Auth;
 use Throwable;
 use App\Models\User;
 use App\DTOs\Auth\RegisterDTO;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-use app\Repository\Interfaces\RegisterInterface;
+use App\Repository\Interfaces\RegisterInterface;
 
 class RegisterService{
 
@@ -23,8 +22,6 @@ class RegisterService{
      */
     public function createNgo(RegisterDTO $registerDto)
     {
-        Log::info("logging from Create Ngo");
-
         try{
             $data=[];
             $data['email'] = $registerDto->email;
@@ -69,9 +66,15 @@ class RegisterService{
         }
     }
 
-
+    /**
+     * Isue plainTextToken
+     *
+     * @param User $user
+     * @param string $name
+     * @return void
+     */
     public function issueToken(User $user, string $name)
     {
-        return  $user->createToken($name)->plainTextToken;
+        return $user->createToken($name)->plainTextToken;
     }
 }
