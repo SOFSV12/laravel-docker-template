@@ -2,12 +2,13 @@
 
 namespace App\Services\Auth;
 
-use Throwable;
-use App\Models\User;
 use App\DTOs\Auth\RegisterDTO;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
+use App\Models\User;
 use App\Repository\Interfaces\RegisterInterface;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class RegisterService{
 
@@ -22,22 +23,29 @@ class RegisterService{
      */
     public function createNgo(RegisterDTO $registerDto)
     {
-        try{
-            $data=[];
-            $data['email'] = $registerDto->email;
-            $data['password'] = Hash::make($registerDto->password);
-            $data['user_type'] = 'ngo';
+        try {
+            $data = [
+                'email' => $registerDto->email,
+                'password' => Hash::make($registerDto->password),
+                'user_type' => 'ngo'
+            ];
 
             $user = $this->repository->create($data);
 
-            // event(new Registered($user));
+            event(new Registered($user));
 
             $token = $this->issueToken($user, 'ngotoken');
 
             return ['user' => $user, 'token' => $token];
 
-        }catch(Throwable $e){
-            throw $e;
+        } catch (Throwable $e) {
+            // Log first, then throw
+            Log::error('Exception occurred', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
         }
     }
 
