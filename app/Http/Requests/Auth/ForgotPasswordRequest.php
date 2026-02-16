@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\DTOs\Auth\LoginDTO;
-use Illuminate\Support\Facades\Log;
+use App\DTOs\Auth\ForgotPasswordDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class ForgotPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +23,13 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string']
+            'email' => ['required','email']
         ];
     }
 
-    public function toDto(): LoginDTO
+    public function toDto(): ForgotPasswordDTO
     {
-
-        return new LoginDTO(...$this->validated());
+        return new ForgotPasswordDTO(...$this->validated());
     }
+
 }
