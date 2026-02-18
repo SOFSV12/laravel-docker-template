@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Auth\ForgotPasswordController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
+use App\Http\Controllers\API\Auth\ResetPasswordController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,17 @@ Route::group(['prefix' => 'auth'], function () {
 
     //requires authenthication
     Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
+
+
+    Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->middleware('guest')->name('password.update');
+
+    Route::get('/reset-password/{token}', function ($token) {
+        return response()->json([
+            'token' => $token,
+            'reset_url' => config('app.frontend_url') . '/reset-password?token=' . $token
+        ]);
+    })->middleware('guest')->name('password.reset');
+    
 });
 
 
