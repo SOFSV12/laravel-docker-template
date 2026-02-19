@@ -65,6 +65,8 @@ class RegisterService{
 
             $user = $this->repository->create($data);
 
+             event(new Registered($user));
+
             $token = $this->issueToken($user, 'volunteertoken');
 
             return ['user' => $user, 'token' => $token];
