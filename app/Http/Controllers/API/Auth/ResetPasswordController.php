@@ -13,7 +13,8 @@ class ResetPasswordController extends Controller
 
     public function resetPassword(ResetPasswordRequest $request)
     {
-        // return "METHOD HIT";
-        return $this->service->resetPassword($request->toDto());
+        $response =  $this->service->resetPassword($request->toDto());
+
+        return response()->json($response, $response['success'] ? 200 : 422);
     }
 }
