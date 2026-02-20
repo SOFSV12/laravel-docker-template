@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use App\Repository\Interfaces\RegisterInterface;
 use App\Repository\RegisterRepository;
@@ -22,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+            Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+            $event->extendSocialite('google', \SocialiteProviders\Google\Provider::class);
+        });
+
     }
 }

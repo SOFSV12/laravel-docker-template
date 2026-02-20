@@ -65,6 +65,8 @@ class RegisterService{
 
             $user = $this->repository->create($data);
 
+             event(new Registered($user));
+
             $token = $this->issueToken($user, 'volunteertoken');
 
             return ['user' => $user, 'token' => $token];
@@ -79,9 +81,9 @@ class RegisterService{
      *
      * @param User $user
      * @param string $name
-     * @return void
+     * @return string
      */
-    public function issueToken(User $user, string $name)
+    public function issueToken(User $user, string $name): string
     {
         return $user->createToken($name)->plainTextToken;
     }

@@ -7,6 +7,7 @@ use App\DTOs\Auth\LoginDTO;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use App\Repository\Interfaces\LoginInterface;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 final class LoginService implements LoginInterface{
@@ -41,4 +42,20 @@ final class LoginService implements LoginInterface{
         }
 
     }
+
+    public function handleSocialLogin($socialUser, string $userType): User
+    {
+        return User::updateOrCreate(
+            ['email' => $socialUser->getEmail()],
+            [
+                'name'              => $socialUser->getName(),
+                'provider_id'       => $socialUser->getId(),
+                'provider'          => 'google',
+                'user_type'         => $userType,
+                'password'          => Hash::make(Str::random(40)),
+                'email_verified_at' => now(),
+            ]
+        );
+    }
+
 }

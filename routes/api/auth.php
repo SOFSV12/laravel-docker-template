@@ -44,6 +44,14 @@ Route::group(['prefix' => 'auth'], function () {
             'reset_url' => config('app.frontend_url') . '/reset-password?token=' . $token
         ]);
     })->middleware('guest')->name('password.reset');
+
+    Route::get('/google/redirect/{userType}', [LoginController::class, 'redirectToProvider']);
+
+    Route::get('/google/callback', [LoginController::class, 'handleProviderCallback']);
+
+    Route::get('/me', function (Request $request) {
+        return $request->user();
+    })->middleware('auth:sanctum');
     
 });
 

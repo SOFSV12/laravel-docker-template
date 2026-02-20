@@ -28,8 +28,7 @@ class ResetPasswordService implements ResetPasswordInterface {
             event(new PasswordReset($user));
         });
 
-        return $status === Password::PASSWORD_RESET // Fixed constant name
-        ? redirect()->route('login')->with('status', __($status))
-        : back()->withErrors(['email' => [__($status)]]);
+        return $status === Password::PASSWORD_RESET ? ['success' => true, 'message' => __($status),] : ['success' => false, 'message' => __($status),];
+
     }
 }
