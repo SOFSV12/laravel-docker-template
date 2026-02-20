@@ -3,7 +3,7 @@
 namespace App\Models;
 
 
-use App\Models\Ngo;
+use App\Models\Ngo\Ngo;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Volunteer\Volunteer;
 use Illuminate\Contracts\Auth\CanResetPassword;

@@ -25,7 +25,7 @@ class RegisterController extends Controller
     {
         $user = $this->service->createVolunteer($request->toDto());
 
-        $this->successResponse(message: 'Volunteer created Successfuly', data: $user, statusCode: Response::HTTP_CREATED);
+        $this->successResponse(message: 'Volunteer Created Successfuly', data: $user, statusCode: Response::HTTP_CREATED);
 
     }
 }
