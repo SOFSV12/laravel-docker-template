@@ -10,16 +10,14 @@
  
 ## 1. Start the Docker containers
       docker compose up --build -d
-## 2. docker exec -it backend-app bash
-      docker exec -it backend-app bash
-## 3. Install PHP dependencies
-      composer install
-## 4. Configure environment variables
+## 2. Install PHP dependencies on Host Machine
+      composer install --ignore-platform-reqs
+## 3. Configure environment variables
       cp .env.example .env
       php artisan key:generate
-## 5. Run Database Migrations
+## 4. Run Database Migrations
       php artisan migrate  
-## 7. Accessing Database 
+## 5. Accessing Database 
 >To visit database [Database](http://127.0.0.1:5050)  Credentials can be found in docker-compose.yml 
     POSTGRES_USER: bayana
     POSTGRES_PASSWORD: causes101  
